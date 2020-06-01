@@ -1,6 +1,10 @@
-import grafica.*; //<>// //<>// //<>//
+import grafica.*; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 
-import controlP5.*; //<>// //<>//
+import controlP5.*; //<>// //<>// //<>// //<>// //<>// //<>//
+
+import org.apache.commons.math3.*;
+import org.apache.commons.math3.fitting.*;
+import org.apache.commons.lang3.*;
 
 import de.fhpotsdam.unfolding.*;
 import de.fhpotsdam.unfolding.core.*;
@@ -77,7 +81,7 @@ void setup() {
 
   //load countries edge marker
   List countries = GeoJSONReader.loadData(this, "countries.geo.json");
-  countryMarkers = MapUtils.createSimpleMarkers(countries);
+  countryMarkers = de.fhpotsdam.unfolding.utils.MapUtils.createSimpleMarkers(countries);
   //draw the countries edges
   for (Marker marker : countryMarkers) {
     marker.setColor(color(255, 255, 255, 0));
@@ -97,7 +101,7 @@ void setup() {
 
 void draw() {
 
-  hint(ENABLE_DEPTH_TEST);
+  //hint(ENABLE_DEPTH_TEST);
 
   pushMatrix();
   //control the 3D angle
@@ -114,8 +118,8 @@ void draw() {
 
   //initial the sketch
   background(0);
-  shadeLegend();
-  drawdrawplot();
+
+
   translate(width*0.5, height*0.5);
   rotateX(rotateX);
   rotateZ(rotateZ);
@@ -123,6 +127,7 @@ void draw() {
 
   //draw the map obviously!
   map.draw();
+
   //debugDisplay.draw();
 
   //some custom markers
@@ -132,6 +137,11 @@ void draw() {
   viz();
 
   popMatrix();
+  drawdrawplot();
+  fit_draw();
+  draw_classify();
+  shadeLegend();
+  fuck_manage();
   hint(DISABLE_DEPTH_TEST);
   //drawdrawplot();
   dateacu();
@@ -192,17 +202,17 @@ void keyPressed() {
     f++;
   }
   if (musicMode) {
-    if ( key == 'a' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "A4" ).asHz() ) );
-    if ( key == 's' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "B4" ).asHz() ) );
-    if ( key == 'd' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "C#5" ).asHz() ) );
-    if ( key == 'f' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "D5" ).asHz() ) );
-    if ( key == 'g' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "E5" ).asHz() ) );
-    if ( key == 'h' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "F#5" ).asHz() ) );
-    if ( key == 'j' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "G#5" ).asHz() ) );
-    if ( key == 'k' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "A5" ).asHz() ) );
-    if ( key == 'l' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "B5" ).asHz() ) );
-    if ( key == ';' ) out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "C#6" ).asHz() ) );
-    if ( key == '\'') out.playNote(0, 1, new SineInstrument( Frequency.ofPitch( "E6" ).asHz() ) );
+    if ( key == 'a' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "A4" ).asHz() ) );
+    if ( key == 's' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "B4" ).asHz() ) );
+    if ( key == 'd' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "C#5" ).asHz() ) );
+    if ( key == 'f' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "D5" ).asHz() ) );
+    if ( key == 'g' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "E5" ).asHz() ) );
+    if ( key == 'h' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "F#5" ).asHz() ) );
+    if ( key == 'j' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "G#5" ).asHz() ) );
+    if ( key == 'k' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "A5" ).asHz() ) );
+    if ( key == 'l' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "B5" ).asHz() ) );
+    if ( key == ';' ) out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "C#6" ).asHz() ) );
+    if ( key == '\'') out.playNote(0, 1, new SineInstrument( ddf.minim.ugens.Frequency.ofPitch( "E6" ).asHz() ) );
   }
 }
 
@@ -222,6 +232,7 @@ void mouseMoved() {
     if (marker != null) {
       marker.setSelected(true);
       drawPlot(marker);
+      datafit(marker);
       cureentValueStatus = true;
       cureentmarker = marker;
     }

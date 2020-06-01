@@ -20,7 +20,7 @@ void music() {
 class SineInstrument implements Instrument
 {
   Oscil wave;
-  Line  ampEnv;
+  ddf.minim.ugens.Line  ampEnv;
   
   SineInstrument( float frequency )
   {
@@ -28,7 +28,7 @@ class SineInstrument implements Instrument
     // the amplitude is zero because 
     // we are going to patch a Line to it anyway
     wave   = new Oscil( frequency, 0, Waves.SINE );
-    ampEnv = new Line();
+    ampEnv = new ddf.minim.ugens.Line();
     ampEnv.patch( wave.amplitude );
   }
   

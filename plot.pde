@@ -30,15 +30,16 @@ void drawPlot(Marker marker) {
           }
           CountryPlot.plot.setPos(5, heights+=300);
           CountryPlot.plot.setPoints(plotpoints);
-          CountryPlot.plot.getTitle().setText(countryName+k);
+          CountryPlot.plot.getTitle().setText(countryName+" "+k);
           CountryPlot.plot.getTitle().setTextAlignment(LEFT);
           CountryPlot.plot.getXAxis().getAxisLabel().setText(catalogs.get(k).year);
           CountryPlot.plot.getYAxis().getAxisLabel().setText(k);
-          CountryPlot.plot.getYAxis().getAxisLabel().setOffset(0.5);
-          CountryPlot.plot.getYAxis().getAxisLabel().setRotate(false);
+          CountryPlot.plot.getYAxis().getAxisLabel().setOffset(40);
+          CountryPlot.plot.getYAxis().getAxisLabel().setRotate(true);
           CountryPlot.plot.getYAxis().getAxisLabel().setTextAlignment(RIGHT);
           CountryPlot.plot.getYAxis().getAxisLabel().setRelativePos(1);
-          CountryPlot.plot.getYAxis().getAxisLabel().setOffset(0.5);
+          CountryPlot.plot.getYAxis().getAxisLabel().setOffset(40);
+          CountryPlot.plot.getYAxis().setOffset(0.5);
           CountryPlot.plot.getYAxis().setExpTickLabels(true);
           CountryPlot.plot.getXAxis().setExpTickLabels(true);
           CountryPlot.plot.getYAxis().setRotateTickLabels(false);
@@ -54,6 +55,8 @@ void drawdrawplot() {
   String[] temp = new String[cataList.size()];
   temp = cataList.toArray(temp);
   if (drawPPP) {
+    pushMatrix();
+    translate(0, 0, 50);
     for (String k : temp) {
       if (thePlot.get(k)!=null) {
         GPlot nowplot = thePlot.get(k).plot;
@@ -70,6 +73,7 @@ void drawdrawplot() {
         nowplot.endDraw();
       }
     }
+    popMatrix();
   }
 }
 

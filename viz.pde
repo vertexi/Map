@@ -231,6 +231,34 @@ void shadeLegend() {
   }
 }
 
+//void shadeLegend() {
+//  if (shadeStatus) {
+//    textSize(20);
+//    int heights = 75;
+//    Float max = maxMin.get(markerCatalog).max;
+//    Float min = maxMin.get(markerCatalog).min;
+//    noStroke();
+//    fill(255);
+//    pushMatrix();
+//    translate(1200, 384, 30);
+//    //rect(1200, 84, 20, 600);
+//    box(20,600,20);
+//    popMatrix();
+//    pushMatrix();
+//    translate(1200, heights+=6, 30);
+//    for (int i = 0; i < 100; i++) {
+//      fill(255, 0, 0, lerp(255, 10, i*0.01f));
+//      //rect(1200, heights+=6, 20, 6);
+//      translate(0, 6, 0);
+//      box(20,6,20);
+//      if (i % 10 == 0) {
+//        fill(255);
+//        text(String.format("%.02e", lerp(max, min, i*0.1f)), 0, 0, 0);
+//      }
+//    }
+//    popMatrix();
+//  }
+//}
 
 Boolean spanStatus = false;
 int spanSpeed = 0;

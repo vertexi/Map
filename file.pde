@@ -1,4 +1,4 @@
-String[] listFileNames(String dir) { //<>//
+String[] listFileNames(String dir) { //<>// //<>// //<>//
   File file = new File(dir);
   if (file.isDirectory()) {
     String names[] = file.list();
@@ -86,6 +86,20 @@ void button() {
     .setLabel("PLOT")
     .setId(4)
     ;
+
+  cp5.addTab("FIT");
+  cp5.getTab("FIT")
+    .activateEvent(true)
+    .setLabel("FIT")
+    .setId(5)
+    ;
+
+  cp5.addTab("CLASSIFY");
+  cp5.getTab("CLASSIFY")
+    .activateEvent(true)
+    .setLabel("CLASSIFY")
+    .setId(6)
+    ;
   // create a few controllers
 
   List l = Arrays.asList(filenames);
@@ -111,6 +125,26 @@ void button() {
     ;
   listControl.put("ImportList", new Scrollers("ImportList"));
 
+  cp5.addDropdownList("CatalogsListX")
+    .setLabel("X:")
+    .setPosition(10, 40)
+    .setSize(250, 200)
+    .setBarHeight(25)
+    .setItemHeight(20)
+    .setFont(createFont("Georgia", 15))
+    // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+    ;
+
+  cp5.addDropdownList("CatalogsListY")
+    .setLabel("Y:")
+    .setPosition(10, 280)
+    .setSize(250, 200)
+    .setBarHeight(25)
+    .setItemHeight(20)
+    .setFont(createFont("Georgia", 15))
+    // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+    ;
+
   Button b = cp5.addButton("imports", 1);
   b.setLabel("IMPORT")
     .setPosition(190, 250)
@@ -121,12 +155,15 @@ void button() {
     .setPosition(190, 500)
     ;
 
+
   // arrange controller in separate tabs
   cp5.getController("FileList").moveTo("import");
   cp5.getController("ImportList").moveTo("import");
+  cp5.getController("CatalogsListX").moveTo("FIT");
+  cp5.getController("CatalogsListY").moveTo("FIT");
+
   cp5.getController("imports").moveTo("import");
   cp5.getController("visualize").moveTo("import");
-
   // Tab 'global' is a tab that lies on top of any 
   // other tab and is always visible
 }
@@ -140,6 +177,57 @@ void controlEvent(ControlEvent theControlEvent) {
   if (theControlEvent.isTab()) {
     if (theControlEvent.getTab().getId() == 4) {
       drawPPP = !drawPPP;
+    }
+    if (theControlEvent.getTab().getId() == 5) {
+      fit_status = !fit_status;
+      fit_plot = !fit_plot;
+      //cp5.getController("slider111").setVisible(!cp5.getController("slider111").isVisible());
+      cp5.getController("CatalogsListX").setVisible(true);
+      cp5.getController("CatalogsListY").setVisible(true);
+      Button d = cp5.addButton("fit_button", 3);
+      d.setLabel("FIT")
+        .setPosition(180, 500)
+        .moveTo("FIT")
+        ;
+      cp5.getController("fit_button").setVisible(true);
+      cp5.remove("FitMethod");
+      cp5.remove("ddegree");
+      cp5.remove("slider111");
+    }
+    if (theControlEvent.getTab().getId() == 6) {
+      classify_status = !classify_status;
+      cp5.remove("CLASSIFY_CO");
+      cp5.remove("CatalogChoose");
+      cp5.remove("NUM_Classify");
+      Button e = cp5.addButton("CLASSIFY_CO", 4);
+      e.setLabel("Classify")
+        .setPosition(170, 100)
+        .moveTo("CLASSIFY")
+        ;
+      cp5.addDropdownList("CatalogChoose")
+        .setLabel("Select one to classify")
+        .setPosition(10, 40)
+        .setSize(150, 200)
+        .setBarHeight(25)
+        .setItemHeight(20)
+        .setFont(createFont("Georgia", 15))
+        .moveTo("CLASSIFY");
+      // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+      ;
+      cp5.addNumberbox("NUM_Classify")
+        .setPosition(180, 40)
+        .setRange(1, 10)
+        .setSize(20, 20)
+        .setScrollSensitivity(1)
+        .setValue(1)
+        .setMultiplier(1)
+        .moveTo("CLASSIFY");
+      ;
+      String[] temp1 = new String[cataList.size()];
+      temp1 = cataList.toArray(temp1);
+      List m = Arrays.asList(temp1);
+      cp5.get(DropdownList.class, "CatalogChoose").setItems(m);
+      String k = temp1[(int)cp5.get(DropdownList.class, "CatalogChoose").getValue()];
     }
   }
   if (temp.charAt(0)=='b' && temp.length() > 10) {
@@ -170,6 +258,63 @@ void controlEvent(ControlEvent theControlEvent) {
     } else if (temp.equals("AutoS")) {
       spanStatus = !spanStatus;
     }
+  }
+  if (temp.length() > 9) {
+    if (temp.substring(0, 10).equals("slider1111")) {
+      for (int j = 0; j < (int)cp5.get(Numberbox.class, "NUM_Classify").getValue(); j++) {
+        if (cp5.get(Textlabel.class, "labelll"+j) != null) {
+          cp5.get(Textlabel.class, "labelll"+j).setText(Float.toString(cp5.get(Slider.class, "slider1111"+j).getValue()));
+        }
+      }
+    }
+  }
+}
+
+void CLASSIFY_CO() {
+  classify();
+}
+
+Boolean fit_plot = false;
+void fit_button() {
+  String[] fitMethods = {"Polynomial", "Gaussian", "Exponential"};
+  cp5.get(DropdownList.class, "CatalogsListX").setVisible(false);
+  cp5.get(DropdownList.class, "CatalogsListY").setVisible(false);
+  cp5.addDropdownList("FitMethod")
+    .setLabel("FIT TYPE")
+    .setPosition(10, 350)
+    .setSize(150, 200)
+    .setBarHeight(25)
+    .setItemHeight(20)
+    .setFont(createFont("Georgia", 15))
+    .setItems(Arrays.asList(fitMethods))
+    // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+    ;
+  cp5.getController("FitMethod").moveTo("FIT");
+  cp5.remove("fit_button");
+  //cp5.get(DropdownList.class, "FitMethod").setVisible(true);
+}
+
+void FitMethod(int n) {
+  cp5.remove("ddegree");
+  cp5.remove("slider111");
+  if (n == 0) {
+    cp5.addNumberbox("ddegree")
+      .setPosition(170, 350)
+      .setRange(0, 10)
+      .setSize(20, 20)
+      .setScrollSensitivity(1)
+      .setValue(1)
+      .setMultiplier(1)
+      .moveTo("FIT");
+    ;
+    cp5.addSlider("slider111")
+      .setRange(0, 100)
+      .setValue(0)
+      .setPosition(20, 450)
+      .setSize(100, 10)
+      .moveTo("FIT")
+      ;
+  } else if (n == 1) {
   }
 }
 

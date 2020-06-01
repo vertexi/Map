@@ -91,6 +91,7 @@ class CountryData {
 
 class Catalog {
   String id;
+  //Date type
   String year;
   HashMap<String, CountryData> country;
 }
