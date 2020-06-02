@@ -69,7 +69,7 @@ void classify() {
         }
       }
 
-      int count = 0;
+      int count = 0; //<>//
       GPointsArray points3 = new GPointsArray(order_data.data.length);
       for (int i = 0; i < order_data.data.length; i++) {
         if (index[i] == 0) {
@@ -109,7 +109,8 @@ void classify() {
             count = i;
           }
         }
-        plot3.addLayer("layers"+j, points4);
+        points4.add(count+1, 0, "end");
+        plot3.addLayer("layers"+j, points4); //<>//
         plot3.getLayer("layers"+j).startHistogram(GPlot.VERTICAL);
         plot3.getLayer("layers"+j).getHistogram().setBgColors(new color[] {color(255, 0, 0, map(j, 0, (int)cp5.get(Numberbox.class, "NUM_Classify").getValue()-1, 10, 255))});
         plot3.getLayer("layers"+j).getHistogram().setLineColors(new color[] {color(255, 0, 0, map(j, 0, (int)cp5.get(Numberbox.class, "NUM_Classify").getValue()-1, 10, 255))});
