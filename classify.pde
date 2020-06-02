@@ -8,6 +8,7 @@ void classify() {
       temp1 = cataList.toArray(temp1);
       String k = temp1[(int)cp5.get(DropdownList.class, "CatalogChoose").getValue()];
       if (catalogs.get(k) != null) {
+        int class_num = (int)cp5.get(Numberbox.class, "NUM_Classify").getValue();
         ArrayList<Float> data = new ArrayList<Float>();
         ArrayList<String> name = new ArrayList<String>();
         HashMap<String, CountryData> country = catalogs.get(k).country;
@@ -36,15 +37,15 @@ void classify() {
         int[] index = new int[order_data.data.length];
         Boolean indicate = true;
         int count1 = 0;
-        for (int j = 0; j < (int)cp5.get(Numberbox.class, "NUM_Classify").getValue(); j++) {
+        for (int j = 0; j < class_num; j++) {
           if (cp5.getController("slider1111"+j).getValue() <= min) {
             count1++;
           }
         }
-        if (count1 == (int)cp5.get(Numberbox.class, "NUM_Classify").getValue()) {
-          index = kmeans(order_data.data, tempy, (int)cp5.get(Numberbox.class, "NUM_Classify").getValue());
-          float[] sample = new float[(int)cp5.get(Numberbox.class, "NUM_Classify").getValue()];
-          for (int i = 0; i < (int)cp5.get(Numberbox.class, "NUM_Classify").getValue(); i++) {
+        if (count1 == class_num) {
+          index = kmeans(order_data.data, tempy, class_num);
+          float[] sample = new float[class_num];
+          for (int i = 0; i < class_num; i++) {
             for (int j = 0; j < index.length; j++) {
               if (index[j] == i) {
                 sample[i] = order_data.data[i];
@@ -61,7 +62,7 @@ void classify() {
 
         if (indicate) {
           for (int i = 0; i < order_data.data.length; i++) {
-            for (int j = (int)cp5.get(Numberbox.class, "NUM_Classify").getValue()-1; j > -1; j--) {
+            for (int j = class_num-1; j > -1; j--) {
               if (order_data.data[i] > cp5.getController("slider1111"+j).getValue()) {
                 index[i] = j;
                 break;
@@ -102,7 +103,7 @@ void classify() {
         plot3.activateZooming(1.2, LEFT, RIGHT);
         //plot3.activateReset();
         GPointsArray points4;
-        for (int j = 1; j < (int)cp5.get(Numberbox.class, "NUM_Classify").getValue(); j++) {
+        for (int j = 1; j < class_num; j++) {
           points4 = new GPointsArray(order_data.data.length);
           for (int i = count+1; i < order_data.data.length; i++) {
             if (index[i] == j) {
@@ -110,7 +111,9 @@ void classify() {
               count = i;
             }
           }
-          points4.add(count+1, 0, "end");
+          if (j == class_num-1) {
+            points4.add(count+1, 0, "end");
+          }
           plot3.removeLayer("layers"+j);
           plot3.addLayer("layers"+j, points4);
           plot3.getLayer("layers"+j).startHistogram(GPlot.VERTICAL);
@@ -126,7 +129,7 @@ void classify() {
           if (countryname.contains(countryId)) {
             int n = countryname.lastIndexOf(countryId);
             // Encode value as brightness (values range: 0-1000)
-            float transparency = map(index[n], 0, (int)cp5.get(Numberbox.class, "NUM_Classify").getValue()-1, 10, 255);
+            float transparency = map(index[n], 0, class_num-1, 10, 255);
             marker.setColor(color(255, 0, 0, transparency));
           } else {
             // No value available
