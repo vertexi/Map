@@ -172,7 +172,7 @@ String markerCatalog = "";
 Boolean visualstatus = true;
 
 void controlEvent(ControlEvent theControlEvent) {
-  println("got a control event from controller with id "+theControlEvent.getName());
+  //println("got a control event from controller with id "+theControlEvent.getName());
   String temp = theControlEvent.getName();
   if (theControlEvent.isTab()) {
     if (theControlEvent.getTab().getId() == 3) {

@@ -137,7 +137,7 @@ void polyFitPoints() {
         int degree = (int)cp5.get(Numberbox.class, "ddegree").getValue();
         PolynomialCurveFitter fitter = PolynomialCurveFitter.create(degree);
         final double[] coeff = fitter.fit(obs.toList());
-        printArray(coeff);
+        //printArray(coeff);
 
         //get the fit points and culculate the RMSE , R-square
 
