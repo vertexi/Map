@@ -1,4 +1,4 @@
-String[] listFileNames(String dir) { //<>// //<>// //<>//
+String[] listFileNames(String dir) { //<>// //<>//
   File file = new File(dir);
   if (file.isDirectory()) {
     String names[] = file.list();
@@ -175,6 +175,10 @@ void controlEvent(ControlEvent theControlEvent) {
   println("got a control event from controller with id "+theControlEvent.getName());
   String temp = theControlEvent.getName();
   if (theControlEvent.isTab()) {
+    if (theControlEvent.getTab().getId() == 3) {
+      cp5.getGroup("g1").moveTo("DATA");
+      cp5.getGroup("g1").setPosition(5, 30);
+    }
     if (theControlEvent.getTab().getId() == 4) {
       drawPPP = !drawPPP;
     }
@@ -195,15 +199,12 @@ void controlEvent(ControlEvent theControlEvent) {
       cp5.remove("slider111");
     }
     if (theControlEvent.getTab().getId() == 6) {
+      plot3 = new GPlot(this);
+      cp5.getGroup("g1").moveTo("CLASSIFY");
+      cp5.getGroup("g1").setPosition(5, 450);
       classify_status = !classify_status;
-      cp5.remove("CLASSIFY_CO");
       cp5.remove("CatalogChoose");
       cp5.remove("NUM_Classify");
-      Button e = cp5.addButton("CLASSIFY_CO", 4);
-      e.setLabel("Classify")
-        .setPosition(170, 100)
-        .moveTo("CLASSIFY")
-        ;
       cp5.addDropdownList("CatalogChoose")
         .setLabel("Select one to classify")
         .setPosition(10, 40)
@@ -216,10 +217,10 @@ void controlEvent(ControlEvent theControlEvent) {
       ;
       cp5.addNumberbox("NUM_Classify")
         .setPosition(180, 40)
-        .setRange(1, 10)
+        .setRange(2, 10)
         .setSize(20, 20)
         .setScrollSensitivity(1)
-        .setValue(1)
+        .setValue(2)
         .setMultiplier(1)
         .moveTo("CLASSIFY");
       ;
@@ -238,6 +239,7 @@ void controlEvent(ControlEvent theControlEvent) {
     }
   } else if (temp.length() > 4) {
     if (temp.charAt(0)=='y') {
+      plot3 = new GPlot(this);
       String a = temp.substring(4);
       if (cataList.contains(a)) {
         currentMaxMin(0);
@@ -270,9 +272,9 @@ void controlEvent(ControlEvent theControlEvent) {
   }
 }
 
-void CLASSIFY_CO() {
-  classify();
-}
+//void CLASSIFY_CO() {
+//  classify();
+//}
 
 Boolean fit_plot = false;
 void fit_button() {

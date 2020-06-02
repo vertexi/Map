@@ -210,7 +210,7 @@ int[] kmeans(float[] x, float[] y, int k) {
       distance[i] = distance(x, y, x_center[i], y_center[i]);
     }
   } while (!indexIsSame(index, prev_index));
-  println(x_center);
+  //println(x_center);
 
   return index;
 }

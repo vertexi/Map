@@ -1,6 +1,6 @@
 import grafica.*; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 
-import controlP5.*; //<>// //<>// //<>// //<>// //<>// //<>//
+import controlP5.*; //<>// //<>// //<>// //<>//
 
 import org.apache.commons.math3.*;
 import org.apache.commons.math3.fitting.*;
@@ -52,6 +52,7 @@ float rotateZ;
 
 void setup() {
   music();
+  plot3 = new GPlot(this);
   //default map size
   size(1280, 768, P3D);
   noStroke();
@@ -107,14 +108,6 @@ void draw() {
   //control the 3D angle
   keycon();
 
-  //make sure when user control the pannel don't effect the map
-  if (mouseX < 280 || mouseY > 680) {
-    eventDispatcher.unregister(map, "pan", map.getId());
-    eventDispatcher.unregister(map, "zoom", map.getId());
-  } else {
-    eventDispatcher.register(map, "pan", map.getId());
-    eventDispatcher.register(map, "zoom", map.getId());
-  }
 
   //initial the sketch
   background(0);
@@ -137,17 +130,33 @@ void draw() {
   viz();
 
   popMatrix();
+  fuck_manage();
+  classify();
   drawdrawplot();
   fit_draw();
   draw_classify();
   shadeLegend();
-  fuck_manage();
   hint(DISABLE_DEPTH_TEST);
   //drawdrawplot();
   dateacu();
   spanAndDance();
   shadeCountries();
   countryValue(cureentmarker);
+  //make sure when user control the pannel don't effect the map
+  if (mouseX < 280 || mouseY > 680) {
+    eventDispatcher.unregister(map, "pan", map.getId());
+    eventDispatcher.unregister(map, "zoom", map.getId());
+  } else {
+    eventDispatcher.register(map, "pan", map.getId());
+    eventDispatcher.register(map, "zoom", map.getId());
+  }
+
+  if (classify_status) {
+    if (plot3.isOverBox(mouseX, mouseY)) {
+      eventDispatcher.unregister(map, "pan", map.getId());
+      eventDispatcher.unregister(map, "zoom", map.getId());
+    }
+  }
 }
 
 //to control the provider change number
