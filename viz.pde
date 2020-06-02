@@ -225,7 +225,7 @@ void shadeLegend() {
       rect(1200, heights+=6, 20, 6);
       if (i % 10 == 0) {
         fill(255);
-        text(String.format("%.02e", lerp(max, min, i*0.1f)), 1200, heights);
+        text(String.format("%.02e", lerp(max, min, i*0.01f)), 1200, heights);
       }
     }
   }
