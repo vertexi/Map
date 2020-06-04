@@ -489,58 +489,62 @@ void sliders(HashMap<String, Float[]> yearss) {
   currentMaxMin(1);
 }
 
+String prev_countryID = "";
 void dataViewer(HashMap<String, Float[]> currentCountryMaxMinValue, String countryId) {
-  int heights = -65;
-  cp5.remove("g2");
-  Group g2 = cp5.addGroup("g2")
-    .setPosition(5, 440)
-    .setBackgroundHeight(100)
-    .setBackgroundColor(color(255, 50))
-    .setLabel("DataViewer")
-    .setWidth(250)
-    .setSize(250, 281)
-    ;
-  cp5.getGroup("g2").moveTo("DATA");
+  if (!prev_countryID.equals(countryId)) {
+    prev_countryID = countryId;
+    int heights = -65;
+    cp5.remove("g2");
+    Group g2 = cp5.addGroup("g2")
+      .setPosition(5, 440)
+      .setBackgroundHeight(100)
+      .setBackgroundColor(color(255, 50))
+      .setLabel("DataViewer")
+      .setWidth(250)
+      .setSize(250, 281)
+      ;
+    cp5.getGroup("g2").moveTo("DATA");
 
-  Textarea myTextlabelA;
-  myTextlabelA = cp5.addTextarea("labellabel")
-    .setPosition(5, heights+=70)
-    .setColorValue(0xffffff00)
-    .setFont(createFont("Georgia", 15))
-    .setWidth(245)
-    .setHeight(280)
-    .setGroup("g2")
-    ;
+    Textarea myTextlabelA;
+    myTextlabelA = cp5.addTextarea("labellabel")
+      .setPosition(5, heights+=70)
+      .setColorValue(0xffffff00)
+      .setFont(createFont("Georgia", 15))
+      .setWidth(245)
+      .setHeight(280)
+      .setGroup("g2")
+      ;
 
-  //list the viz list
-  String tt = "";
-  String[] temp = new String[cataList.size()];
-  temp = cataList.toArray(temp);
-  for (String a : temp) {
-    Float[] temps = currentCountryMaxMinValue.get(a);
-    String countryname = "Wrong";
-    HashMap<String, CountryData> country = catalogs.get(a).country;
-    if (maxMin.get(a) != null) {
-      tt += a+":\n\tWorld:\n\t  Max:" + country.get(maxMin.get(a).maxcountryname).countryName + ":" + maxMin.get(a).max 
-        + "\n\t  Min:" + country.get(maxMin.get(a).mincountryname).countryName + ":" + maxMin.get(a).min + "\n";
-    }
+    //list the viz list
+    String tt = "";
+    String[] temp = new String[cataList.size()];
+    temp = cataList.toArray(temp);
+    for (String a : temp) {
+      Float[] temps = currentCountryMaxMinValue.get(a);
+      String countryname = "Wrong";
+      HashMap<String, CountryData> country = catalogs.get(a).country;
+      if (maxMin.get(a) != null) {
+        tt += a+":\n\tWorld:\n\t  Max:" + country.get(maxMin.get(a).maxcountryname).countryName + ":" + maxMin.get(a).max 
+          + "\n\t  Min:" + country.get(maxMin.get(a).mincountryname).countryName + ":" + maxMin.get(a).min + "\n";
+      }
 
-    if (country.get(countryId) != null) {
-      countryname = country.get(countryId).countryName;
-    }
-    if (temps != null) {
-      String s = "\t"+countryname+":\n\t  Value:"+temps[3]
-        +"\n\t  Max :"+temps[0]+"\n\t  Min :"+temps[1]+"\n\t  Aver:"+temps[2]+"\n\n";
-      tt = tt+s;
-      cp5.get(Textarea.class, "labellabel")
-        .setText(tt)
-        ;
-    } else {
-      //countryname+":\n"+a+":\n"+"\tNo Data Here."
-      tt = tt + "\t"+countryname+":\n\t  No Data Here."+"\n";
-      cp5.get(Textarea.class, "labellabel")
-        .setText(tt)
-        ;
+      if (country.get(countryId) != null) {
+        countryname = country.get(countryId).countryName;
+      }
+      if (temps != null) {
+        String s = "\t"+countryname+":\n\t  Value:"+temps[3]
+          +"\n\t  Max :"+temps[0]+"\n\t  Min :"+temps[1]+"\n\t  Aver:"+temps[2]+"\n\n";
+        tt = tt+s;
+        cp5.get(Textarea.class, "labellabel")
+          .setText(tt)
+          ;
+      } else {
+        //countryname+":\n"+a+":\n"+"\tNo Data Here."
+        tt = tt + "\t"+countryname+":\n\t  No Data Here."+"\n";
+        cp5.get(Textarea.class, "labellabel")
+          .setText(tt)
+          ;
+      }
     }
   }
 }
