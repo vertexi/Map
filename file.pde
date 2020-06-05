@@ -525,7 +525,8 @@ void dataViewer(HashMap<String, Float[]> currentCountryMaxMinValue, String count
       HashMap<String, CountryData> country = catalogs.get(a).country;
       if (maxMin.get(a) != null) {
         tt += a+":\n\tWorld:\n\t  Max:" + country.get(maxMin.get(a).maxcountryname).countryName + ":" + maxMin.get(a).max 
-          + "\n\t  Min:" + country.get(maxMin.get(a).mincountryname).countryName + ":" + maxMin.get(a).min + "\n";
+          + "\n\t  Min:" + country.get(maxMin.get(a).mincountryname).countryName + ":" + maxMin.get(a).min + 
+          "\n\t  Average:" + maxMin.get(a).aver + "\n";
       }
 
       if (country.get(countryId) != null) {

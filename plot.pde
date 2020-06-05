@@ -43,7 +43,8 @@ void drawPlot(Marker marker) {
           CountryPlot.plot.getYAxis().setExpTickLabels(true);
           CountryPlot.plot.getXAxis().setExpTickLabels(true);
           CountryPlot.plot.getYAxis().setRotateTickLabels(false);
-          //CountryPlot.plot.getXAxis().setRotateTickLabels(true);
+          CountryPlot.plot.activatePanning();
+          CountryPlot.plot.activateZooming(1.2, LEFT, RIGHT);
           thePlot.put(k, CountryPlot);
         }
       }
@@ -71,6 +72,10 @@ void drawdrawplot() {
         nowplot.drawLines();
         nowplot.drawPoints();
         nowplot.endDraw();
+        if (nowplot.isOverBox(mouseX, mouseY)) {
+          eventDispatcher.unregister(map, "pan", map.getId());
+          eventDispatcher.unregister(map, "zoom", map.getId());
+        }
       }
     }
     popMatrix();

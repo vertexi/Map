@@ -122,6 +122,10 @@ void fit_draw() {
     nowplot.drawLines();
     nowplot.drawPoints();
     nowplot.endDraw();
+    if (nowplot.isOverBox(mouseX, mouseY)) {
+      eventDispatcher.unregister(map, "pan", map.getId());
+      eventDispatcher.unregister(map, "zoom", map.getId());
+    }
   }
 }
 

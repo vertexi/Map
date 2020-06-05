@@ -1,6 +1,6 @@
-import grafica.*; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+import grafica.*; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 
-import controlP5.*; //<>// //<>// //<>// //<>//
+import controlP5.*; //<>// //<>// //<>//
 
 import org.apache.commons.math3.*;
 import org.apache.commons.math3.fitting.*;
@@ -132,8 +132,6 @@ void draw() {
   popMatrix();
   fuck_manage();
   classify();
-  drawdrawplot();
-  fit_draw();
   draw_classify();
   shadeLegend();
   hint(DISABLE_DEPTH_TEST);
@@ -150,7 +148,8 @@ void draw() {
     eventDispatcher.register(map, "pan", map.getId());
     eventDispatcher.register(map, "zoom", map.getId());
   }
-
+  drawdrawplot();
+  fit_draw();
   if (classify_status) {
     if (plot3.isOverBox(mouseX, mouseY)) {
       eventDispatcher.unregister(map, "pan", map.getId());
