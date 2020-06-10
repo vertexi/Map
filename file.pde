@@ -100,6 +100,13 @@ void button() {
     .setLabel("CLASSIFY")
     .setId(6)
     ;
+    
+  cp5.addTab("MATH");
+  cp5.getTab("MATH")
+    .activateEvent(true)
+    .setLabel("MATH")
+    .setId(7)
+    ;
   // create a few controllers
 
   List l = Arrays.asList(filenames);
@@ -229,6 +236,10 @@ void controlEvent(ControlEvent theControlEvent) {
       List m = Arrays.asList(temp1);
       cp5.get(DropdownList.class, "CatalogChoose").setItems(m);
       String k = temp1[(int)cp5.get(DropdownList.class, "CatalogChoose").getValue()];
+    }
+    if (theControlEvent.getTab().getId() == 7) {
+      math_status = !math_status;
+      control_math();
     }
   }
   if (temp.charAt(0)=='b' && temp.length() > 10) {
