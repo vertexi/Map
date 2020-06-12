@@ -130,6 +130,7 @@ void draw() {
   viz();
 
   popMatrix();
+  scatter_operator();
   fuck_manage();
   classify();
   draw_classify();
@@ -150,6 +151,7 @@ void draw() {
   }
   drawdrawplot();
   fit_draw();
+  draw_scatter_plot();
   if (classify_status) {
     if (plot3.isOverBox(mouseX, mouseY)) {
       eventDispatcher.unregister(map, "pan", map.getId());

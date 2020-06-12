@@ -9,6 +9,7 @@ void loadDataFromCSV(String fileName) {
     println("Nothing to do.");
     return;
   }
+  
   if (header != null) {
     Catalog catalog = new Catalog();
     catalog.id = header;

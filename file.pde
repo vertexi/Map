@@ -1,4 +1,4 @@
-String[] listFileNames(String dir) { //<>// //<>//
+String[] listFileNames(String dir) { //<>// //<>// //<>//
   File file = new File(dir);
   if (file.isDirectory()) {
     String names[] = file.list();
@@ -106,6 +106,13 @@ void button() {
     .activateEvent(true)
     .setLabel("MATH")
     .setId(7)
+    ;
+    
+  cp5.addTab("SCATTER");
+  cp5.getTab("SCATTER")
+    .activateEvent(true)
+    .setLabel("SCATTER")
+    .setId(8)
     ;
   // create a few controllers
 
@@ -241,6 +248,12 @@ void controlEvent(ControlEvent theControlEvent) {
       math_status = !math_status;
       control_math();
     }
+    if (theControlEvent.getTab().getId() == 8) {
+      cp5.getGroup("g1").moveTo("SCATTER");
+      cp5.getGroup("g1").setPosition(5, 450);
+      scatter_status = !scatter_status;
+      scatter_con();
+    }
   }
   if (temp.charAt(0)=='b' && temp.length() > 10) {
     String c = temp.substring(10);
@@ -336,6 +349,8 @@ void FileList(int n) {
 }
 
 void imports(int theN) {
+  importedItem = new ArrayList<String>();
+  catalogs = new HashMap<String, Catalog>();
   //traverse all listControl
   int[] ad = listControl.get("FileList").contro;
   for (int i = 0; i < 50; i++) {

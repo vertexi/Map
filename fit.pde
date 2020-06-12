@@ -1,4 +1,4 @@
-String preprevCountryName = "";//To detect the previous opreation country //<>// //<>//
+String preprevCountryName = "";//To detect the previous opreation country //<>// //<>// //<>//
 Boolean fit_status = false;
 
 ArrayList<Float> currentPoints;
@@ -119,7 +119,9 @@ void fit_draw() {
     nowplot.drawYAxis();
     nowplot.drawTitle();
     nowplot.drawGridLines(GPlot.BOTH);
-    nowplot.drawLines();
+    if (nowplot.getLayer("fit_layer") != null) {
+      nowplot.getLayer("fit_layer").drawLines();
+    }
     nowplot.drawPoints();
     nowplot.endDraw();
     if (nowplot.isOverBox(mouseX, mouseY)) {
@@ -141,6 +143,7 @@ void polyFitPoints() {
         int degree = (int)cp5.get(Numberbox.class, "ddegree").getValue();
         PolynomialCurveFitter fitter = PolynomialCurveFitter.create(degree);
         final double[] coeff = fitter.fit(obs.toList());
+        
         //printArray(coeff);
 
         //get the fit points and culculate the RMSE , R-square
@@ -157,6 +160,17 @@ void polyFitPoints() {
           mean_y += currentPointsY.get(l);
         }
         mean_y = mean_y/currentPointsY.size();
+        //if (degree == 1) {
+        //  float[] pointxx = new float[currentPoints.size()];
+        //  for (int l = 0; l < currentPointsY.size(); l++) {
+        //    pointxx[l] =  pointX[l];
+        //  }
+        //  float[] temp_coeff = leastSquareLinearFit(pointxx, points);
+        //  coeff[0] = temp_coeff[0];
+        //  coeff[1] = temp_coeff[1];
+        //} else {
+        //  coeff = fitter.fit(obs.toList());
+        //}
         for (float point : points) {
           square_y += sq(point - mean_y);
         }
