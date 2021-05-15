@@ -18,6 +18,9 @@ from os.path import isfile, join
 # %%
 # import Hebei province data
 geo_df = geopandas.read_file("./china-geojson/geometryProvince/13.json")
+# change the id to the name with utf-8 encoding
+geo_df.loc[:,'id'] = geo_df.loc[:,'name']
+geo_df.to_file("Hebei.geojson", driver="GeoJSON", encoding="utf-8")
 
 # %%
 # try to plot the map.
@@ -70,3 +73,9 @@ Hebei_df.drop('hour',axis=1, inplace=True)
 # %%
 # get the air indicator's names
 air_indicator_names = Hebei_df.index.get_level_values(0).unique()
+
+# %%
+for indicator_name in air_indicator_names:
+    temp_indicator = Hebei_df.loc[indicator_name].T.stack()
+    temp_indicator.name = indicator_name
+    temp_indicator.to_csv("processed_data/"+indicator_name+".csv")
