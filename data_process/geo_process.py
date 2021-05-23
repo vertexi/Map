@@ -6,25 +6,33 @@ Created on Fri May 14 20:53:44 2021
 """
 
 # %%
+import matplotlib
+# matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 # import the geo data process library
 import geopandas
 import pandas as pd
 import numpy as np
 
 # for the file listing issue
+import os
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, exists
 
 # %%
 # import Hebei province data
 geo_df = geopandas.read_file("./china-geojson/geometryProvince/13.json")
 # change the id to the name with utf-8 encoding
 geo_df.loc[:,'id'] = geo_df.loc[:,'name']
+if exists("Hebei.geojson"):
+    os.remove("Hebei.geojson")
 geo_df.to_file("Hebei.geojson", driver="GeoJSON", encoding="utf-8")
 
 # %%
 # try to plot the map.
-geo_df.plot()
+fig, ax = plt.subplots()
+geo_df.plot(ax=ax)
+fig.show()
 
 # %%
 # listing files under the air_data directory
