@@ -15,4 +15,4 @@ with open("china_countries.geo.json") as ff:
 
 # %%
 for city in data_china['features']:
-    ['properties']['id']
+    city['id'] = city['properties']['name']

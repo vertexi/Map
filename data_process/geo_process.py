@@ -17,6 +17,7 @@ import numpy as np
 import os
 from os import listdir
 from os.path import isfile, join, exists
+import json
 
 # %%
 # import Hebei province data
@@ -26,6 +27,18 @@ geo_df.loc[:,'id'] = geo_df.loc[:,'name']
 if exists("Hebei.geojson"):
     os.remove("Hebei.geojson")
 geo_df.to_file("Hebei.geojson", driver="GeoJSON", encoding="utf-8")
+
+# %%
+with open("Hebei.geojson") as ff:
+    data_hebei = json.load(ff)
+
+for city in data_hebei['features']:
+    city['id'] = city['properties']['name']
+
+if exists("Hebei.geojson"):
+    os.remove("Hebei.geojson")
+with open("Hebei.geojson", "w", encoding="utf8") as ff:
+    json.dump(data_hebei, ff, ensure_ascii=False)
 
 # %%
 # try to plot the map and the centroids.
@@ -45,7 +58,9 @@ geo_centroids.index.name = 'city'
 geo_centroids.rename(columns={0:'longitude',1:'latitude'}, inplace=True)
 geo_centroids['id'] = geo_centroids.index
 geo_centroids = geo_centroids[['id','longitude','latitude']]
-
+if exists("china_centroid.csv"):
+    os.remove("china_centroid.csv")
+geo_centroids.to_csv('china_centroid.csv', encoding='utf-8')
 
 
 
