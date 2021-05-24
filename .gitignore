@@ -1,1 +1,4 @@
+*.swp
+tags
 out/
+data_process/processed_data/
