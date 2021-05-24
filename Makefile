@@ -4,3 +4,6 @@ sketch      = C:\\Users\\Apoptosis\\Documents\\Processing\\map
 
 target:
 	${compiler} --force --sketch=${sketch} --output=${sketch}\\out --run
+
+tags:
+	ctags -R --langmap=java:.pde --exclude=build-tmp

@@ -7,7 +7,6 @@ Created on Fri May 14 20:53:44 2021
 
 # %%
 import matplotlib
-# matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 # import the geo data process library
 import geopandas
@@ -29,10 +28,26 @@ if exists("Hebei.geojson"):
 geo_df.to_file("Hebei.geojson", driver="GeoJSON", encoding="utf-8")
 
 # %%
-# try to plot the map.
+# try to plot the map and the centroids.
 fig, ax = plt.subplots()
 geo_df.plot(ax=ax)
+geo_df['geometry'].centroid.plot(marker='*', color='red', ax=ax)
 fig.show()
+
+# %%
+geo_centroids = pd.DataFrame(geo_df['geometry'].centroid.copy())
+geo_centroids['name'] = geo_df['name'].copy()
+geo_centroids.set_index('name', inplace=True)
+geo_centroids.columns = ['centroids']
+geo_centroids = geo_centroids['centroids'].apply(lambda x : [x.x, x.y])
+geo_centroids = pd.DataFrame.from_dict(dict(zip(geo_centroids.index, geo_centroids.values))).T
+geo_centroids.index.name = 'city'
+geo_centroids.rename(columns={0:'longitude',1:'latitude'}, inplace=True)
+geo_centroids['id'] = geo_centroids.index
+geo_centroids = geo_centroids[['id','longitude','latitude']]
+
+
+
 
 # %%
 # listing files under the air_data directory

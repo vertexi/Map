@@ -52,6 +52,10 @@ void loadDataFromCSV(String fileName) {
         dataEntry.value = new Float[2][9999];
         dataEntry.countryName = columns[0];
         dataEntry.id = columns[1];
+
+        // debug_message
+        println(dataEntry.id);
+
         dataEntry.value[0][0] = valuea;
         dataEntry.value[1][0] = Float.parseFloat(columns[3]);
         country.put(dataEntry.id, dataEntry);

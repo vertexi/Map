@@ -91,6 +91,11 @@ void setup() {
   }
   map.addMarkers(countryMarkers);
 
+  for (Marker marker : countryMarkers) {
+    String countryId = marker.getId();
+    println(countryId);
+  }
+
   //load plastic data
   //catalogs = loadDataFromCSV("plasticperpeople.csv");
   //load contries center coordinates data
