@@ -24,20 +24,21 @@ import json
 geo_df = geopandas.read_file("./china-geojson/geometryProvince/13.json")
 # change the id to the name with utf-8 encoding
 geo_df.loc[:,'id'] = geo_df.loc[:,'name']
-if exists("Hebei.geojson"):
-    os.remove("Hebei.geojson")
-geo_df.to_file("Hebei.geojson", driver="GeoJSON", encoding="utf-8")
+if exists("./processed_data/hebei_countries.geo.json"):
+    os.remove("./processed_data/hebei_countries.geo.json")
+geo_df.to_file("./processed_data/hebei_countries.geo.json", driver="GeoJSON", encoding="utf-8")
 
 # %%
-with open("Hebei.geojson") as ff:
+# process the geojson data with right id
+with open("./processed_data/hebei_countries.geo.json") as ff:
     data_hebei = json.load(ff)
 
 for city in data_hebei['features']:
     city['id'] = city['properties']['name']
 
-if exists("Hebei.geojson"):
-    os.remove("Hebei.geojson")
-with open("Hebei.geojson", "w", encoding="utf8") as ff:
+if exists("./processed_data/hebei_countries.geo.json"):
+    os.remove("./processed_data/hebei_countries.geo.json")
+with open("./processed_data/hebei_countries.geo.json", "w", encoding="utf8") as ff:
     json.dump(data_hebei, ff, ensure_ascii=False)
 
 # %%
@@ -48,6 +49,7 @@ geo_df['geometry'].centroid.plot(marker='*', color='red', ax=ax)
 fig.show()
 
 # %%
+# get the geojson centroids and save.
 geo_centroids = pd.DataFrame(geo_df['geometry'].centroid.copy())
 geo_centroids['name'] = geo_df['name'].copy()
 geo_centroids.set_index('name', inplace=True)
@@ -58,11 +60,9 @@ geo_centroids.index.name = 'city'
 geo_centroids.rename(columns={0:'longitude',1:'latitude'}, inplace=True)
 geo_centroids['id'] = geo_centroids.index
 geo_centroids = geo_centroids[['id','longitude','latitude']]
-if exists("china_centroid.csv"):
-    os.remove("china_centroid.csv")
-geo_centroids.to_csv('china_centroid.csv', encoding='utf-8')
-
-
+if exists("./processed_data/china_centroid.csv"):
+    os.remove("./processed_data/china_centroid.csv")
+geo_centroids.to_csv('./processed_data/china_centroid.csv', encoding='utf-8')
 
 # %%
 # listing files under the air_data directory

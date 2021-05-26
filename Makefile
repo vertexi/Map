@@ -7,3 +7,8 @@ target:
 
 tags:
 	ctags -R --langmap=java:.pde --exclude=build-tmp
+
+data:
+	cp ./data_process/processed_data/*.csv ./data/userdata/
+	cp ./data_process/processed_data/china_centroid.csv ./data/country_centroids.csv
+	cp ./data_process/processed_data/hebei_countries.geo.json ./data/countries.geo.json
