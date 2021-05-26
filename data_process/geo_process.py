@@ -117,3 +117,15 @@ for indicator_name in air_indicator_names:
     temp_indicator = Hebei_df.loc[indicator_name].T.stack()
     temp_indicator.name = indicator_name
     temp_indicator.to_csv("processed_data/"+indicator_name+".csv")
+
+# %%
+for indicator_name in air_indicator_names:
+    temp = pd.read_csv("processed_data/"+indicator_name+".csv")
+    templist = list(temp.columns)
+    templist[0] = "name"
+    temp.columns = templist
+    temp["id"] = temp["name"]
+    temp = temp[["name","id","date",indicator_name]]
+    temp.set_index("name", inplace=True)
+    temp.to_csv("processed_data/"+indicator_name+".csv")
+
