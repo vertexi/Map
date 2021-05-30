@@ -8,12 +8,8 @@ target:
 tags:
 	ctags -R --langmap=java:.pde --exclude=build-tmp
 
-datas:
-	cp ./data_process/processed_data/*.csv ./data/userdata/
-	cp ./data_process/processed_data/china_centroid.csv ./data/country_centroids.csv
-	cp ./data_process/processed_data/hebei_countries.geo.json ./data/countries.geo.json
-
 clean:
-	rm ./data/userdata/*.csv
-	rm ./data/country_centroids.csv
-	rm ./data/countries.geo.json
+	rm -f ./data/userdata/*.csv
+	rm -f ./data/*.csv
+	rm -f ./data/countries.geo.json
+	rm -f ./data_process/processed_data/*
