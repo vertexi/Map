@@ -21,24 +21,24 @@ import json
 
 # %%
 # import Hebei province data
-geo_df = geopandas.read_file("./china-geojson/geometryProvince/13.json")
+geo_df = geopandas.read_file("./china-geojson/geometryProvince/14.json")
 # change the id to the name with utf-8 encoding
 geo_df.loc[:,'id'] = geo_df.loc[:,'name']
-if exists("./processed_data/hebei_countries.geo.json"):
-    os.remove("./processed_data/hebei_countries.geo.json")
-geo_df.to_file("./processed_data/hebei_countries.geo.json", driver="GeoJSON", encoding="utf-8")
+if exists("./processed_data/countries.geo.json"):
+    os.remove("./processed_data/countries.geo.json")
+geo_df.to_file("./processed_data/countries.geo.json", driver="GeoJSON", encoding="utf-8")
 
 # %%
 # process the geojson data with right id
-with open("./processed_data/hebei_countries.geo.json") as ff:
+with open("./processed_data/countries.geo.json") as ff:
     data_hebei = json.load(ff)
 
 for city in data_hebei['features']:
     city['id'] = city['properties']['name']
 
-if exists("./processed_data/hebei_countries.geo.json"):
-    os.remove("./processed_data/hebei_countries.geo.json")
-with open("./processed_data/hebei_countries.geo.json", "w", encoding="utf8") as ff:
+if exists("./processed_data/countries.geo.json"):
+    os.remove("./processed_data/countries.geo.json")
+with open("./processed_data/countries.geo.json", "w", encoding="utf8") as ff:
     json.dump(data_hebei, ff, ensure_ascii=False)
 
 # %%
@@ -60,9 +60,9 @@ geo_centroids.index.name = 'city'
 geo_centroids.rename(columns={0:'longitude',1:'latitude'}, inplace=True)
 geo_centroids['id'] = geo_centroids.index
 geo_centroids = geo_centroids[['id','longitude','latitude']]
-if exists("./processed_data/china_centroid.csv"):
-    os.remove("./processed_data/china_centroid.csv")
-geo_centroids.to_csv('./processed_data/china_centroid.csv', encoding='utf-8')
+if exists("./processed_data/country_centroids.csv"):
+    os.remove("./processed_data/country_centroids.csv")
+geo_centroids.to_csv('./processed_data/country_centroids.csv', encoding='utf-8')
 
 # %%
 # listing files under the air_data directory

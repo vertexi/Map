@@ -524,7 +524,7 @@ void dataViewer(HashMap<String, Float[]> currentCountryMaxMinValue, String count
     Group g2 = cp5.addGroup("g2")
       .setPosition(5, 440)
       .setBackgroundHeight(100)
-      .setBackgroundColor(color(255, 50))
+      .setBackgroundColor(color(21, 9, 77))
       .setLabel("DataViewer")
       .setWidth(250)
       .setSize(250, 281)
