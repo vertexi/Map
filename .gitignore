@@ -3,3 +3,7 @@ tags
 out/
 data/
 data_process/processed_data/
+data_process/*.tar.gz
+map/
+application.windows32/
+*.zip
