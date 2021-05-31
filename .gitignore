@@ -6,4 +6,6 @@ data_process/processed_data/
 data_process/*.tar.gz
 map/
 application.windows32/
+application.windows64/
 *.zip
+.orig
